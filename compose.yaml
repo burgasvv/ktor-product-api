@@ -14,5 +14,17 @@ services:
     volumes:
       - postgres_data:/var/lib/data/postgresql
 
+  ktor-product-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    ports:
+      - "9000:9000"
+    environment:
+      POSTGRES_URL: jdbc:postgresql://postgres:5432/ktor_product_api_db
+
 volumes:
   postgres_data:
