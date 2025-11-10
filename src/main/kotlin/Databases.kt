@@ -60,6 +60,7 @@ object StoreProduct : Table("store_product") {
         get() = PrimaryKey(arrayOf(storeId, productId))
 }
 
+@Suppress("UnusedReceiverParameter")
 fun Application.configureDatabases() {
     val database = Database.connect(
         url = "jdbc:postgresql://localhost:6000/ktor_product_api_db",
