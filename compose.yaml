@@ -1,0 +1,18 @@
+
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: ktor_product_api_postgres
+    ports:
+      - "6000:5432"
+    restart: unless-stopped
+    environment:
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ktor_product_api_db
+    volumes:
+      - postgres_data:/var/lib/data/postgresql
+
+volumes:
+  postgres_data:

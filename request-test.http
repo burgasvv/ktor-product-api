@@ -1,0 +1,186 @@
+###
+GET /api/v1/generate-csrf
+Host: localhost:9000
+Accept: application/json
+
+
+
+### IdentityRequests
+
+
+###
+GET /api/v1/identities
+Host: localhost:9000
+Accept: application/json
+Authorization: Basic burgasvv@gmail.com burgasvv
+
+###
+GET /api/v1/identities/by-id?identityId=5bfada72-5a82-4799-aec5-4bd457c27fd4
+Host: localhost:9000
+Accept: application/json
+Authorization: Basic burgasvv@gmail.com burgasvv
+
+###
+POST /api/v1/identities/create
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+Origin: http://localhost:9000
+X-Csrf-Token: 01cc5673-c74b-4067-9d42-e1cf37119e48
+
+{
+    "authority": "USER",
+    "username": "zagor",
+    "password": "zagor",
+    "email": "zagor@gmail.com",
+    "biography": "Биография пользователя",
+    "active": true
+}
+
+###
+PUT /api/v1/identities/update
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic zagor@gmail.com zagor
+
+{
+    "id": "257f84d0-4554-444b-8ea7-5cab95d60cce",
+    "authority": "ADMIN"
+}
+
+###
+DELETE /api/v1/identities/delete?identityId=c1d18aa6-4b2b-4d87-ac94-cb15bdf54895
+Host: localhost:9000
+Accept: application/json
+
+
+
+### Category Requests
+
+###
+GET /api/v1/categories
+Host: localhost:9000
+Accept: application/json
+
+###
+GET /api/v1/categories/by-id?categoryId=25740441-f173-456c-a6cf-fec93f500737
+Host: localhost:9000
+Accept: application/json
+
+###
+POST /api/v1/categories/create
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+Authorization: Basic burgasvv@gmail.com burgasvv
+
+{
+    "name": "Fruit Products",
+    "description": "Fruit Products description"
+}
+
+###
+PUT /api/v1/categories/update
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": "ec8ec503-099e-40bf-8c49-611fd3b8247e",
+    "name": "Fruit Products"
+}
+
+###
+DELETE /api/v1/categories/delete?categoryId=ec8ec503-099e-40bf-8c49-611fd3b8247e
+Host: localhost:9000
+Accept: application/json
+
+
+
+### Product Requests
+
+
+
+###
+GET /api/v1/products
+Host: localhost:9000
+Accept: application/json
+
+###
+GET /api/v1/products/by-id?productId=efd58b83-646a-47fa-9ef9-bd12a4a6b17b
+Host: localhost:9000
+Accept: application/json
+
+###
+POST /api/v1/products/create
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+
+{
+    "categoryId": "764b8c5c-30d1-4314-86c6-9b689a924d87",
+    "name": "Black Bread",
+    "description": "Black Bread description",
+    "price": 50.6
+}
+
+###
+PUT /api/v1/products/update
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": "33539e75-7753-4383-a9a7-728a293891e4",
+    "price": 60.2
+}
+
+###
+DELETE /api/v1/products/delete?productId=33539e75-7753-4383-a9a7-728a293891e4
+Host: localhost:9000
+Accept: application/json
+
+
+
+### Store Requests
+
+
+
+###
+GET /api/v1/stores
+Host: localhost:9000
+Accept: application/json
+Authorization: Basic burgasvv@gmail.com burgasvv
+
+###
+GET /api/v1/stores/by-id?storeId=dde5a57a-94a7-443e-a4ba-8e6b6ab456bb
+Host: localhost:9000
+Accept: application/json
+
+###
+POST /api/v1/stores/create
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Store 3",
+    "address": "Store Third address"
+}
+
+###
+PUT /api/v1/stores/update
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id": "31a9688a-7bc8-4922-bf93-e05488b5c196",
+    "name": "Store Third"
+}
+
+###
+DELETE /api/v1/stores/delete?storeId=31a9688a-7bc8-4922-bf93-e05488b5c196
+Host: localhost:9000
+Accept: application/json
