@@ -164,12 +164,6 @@
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-auth</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
             <artifactId>ktor-server-csrf-jvm</artifactId>
             <version>3.3.1</version>
             <scope>implementation</scope>
@@ -225,6 +219,16 @@
             <artifactId>ktor-server-cors</artifactId>
             <version>3.3.1</version>
             <scope>implementation</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-core-jvm</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.ktor</groupId>
+            <artifactId>ktor-client-cio</artifactId>
+            <version>3.3.2</version>
         </dependency>
     </dependencies>
     <build>

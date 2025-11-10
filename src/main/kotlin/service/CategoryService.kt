@@ -7,8 +7,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.currentCoroutineContext
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import org.burgas.Category
 import org.burgas.Product
@@ -19,7 +17,6 @@ import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 @Serializable
 data class CategoryRequest(
@@ -85,7 +82,7 @@ fun UpdateStatement.toCategory(categoryId: UUID, categoryRequest: CategoryReques
 class CategoryService {
 
     suspend fun findAll(): List<CategoryShortResponse> = newSuspendedTransaction(
-        readOnly = true, transactionIsolation = 2
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
     ) {
         Category.selectAll().map {
             it.toCategoryShortResponse()
@@ -93,7 +90,7 @@ class CategoryService {
     }
 
     suspend fun findById(categoryId: UUID): List<CategoryFullResponse> = newSuspendedTransaction(
-        readOnly = true, transactionIsolation = 2, context = Dispatchers.IO
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
     ) {
         val products = (Category leftJoin Product)
             .select(Product.fields + Category.fields)
@@ -109,20 +106,26 @@ class CategoryService {
             .toList()
     }
 
-    suspend fun create(categoryRequest: CategoryRequest) = newSuspendedTransaction(transactionIsolation = 2) {
+    suspend fun create(categoryRequest: CategoryRequest) = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Category.insert { insertStatement ->
             insertStatement.toCategory(categoryRequest)
         }
     }
 
-    suspend fun update(categoryRequest: CategoryRequest): Boolean = newSuspendedTransaction(transactionIsolation = 2) {
+    suspend fun update(categoryRequest: CategoryRequest): Boolean = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         val categoryId = categoryRequest.id ?: throw NullPointerException("Category id is null")
         Category.update({ Category.id eq categoryId }) { updateStatement ->
             updateStatement.toCategory(categoryId, categoryRequest)
         } > 0
     }
 
-    suspend fun delete(categoryId: UUID): Boolean = newSuspendedTransaction(transactionIsolation = 2) {
+    suspend fun delete(categoryId: UUID): Boolean = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Category.deleteWhere { Category.id eq categoryId } > 0
     }
 }

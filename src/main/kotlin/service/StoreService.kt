@@ -6,6 +6,7 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
 import org.burgas.*
 import org.jetbrains.exposed.sql.ResultRow
@@ -100,13 +101,17 @@ fun UpdateStatement.toStore(storeId: UUID, storeRequest: StoreRequest) {
 
 class StoreService {
 
-    suspend fun findAll(): List<StoreShortResponse> = newSuspendedTransaction {
+    suspend fun findAll(): List<StoreShortResponse> = newSuspendedTransaction(
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Store.selectAll()
             .map { resultRow -> resultRow.toStoreShortResponse() }
             .toList()
     }
 
-    suspend fun findById(storeId: UUID): StoreFullResponse = newSuspendedTransaction {
+    suspend fun findById(storeId: UUID): StoreFullResponse = newSuspendedTransaction(
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         val products = Store
             .leftJoin(StoreProduct)
             .leftJoin(Product)
@@ -125,20 +130,26 @@ class StoreService {
             .single()
     }
 
-    suspend fun create(storeRequest: StoreRequest) = newSuspendedTransaction {
+    suspend fun create(storeRequest: StoreRequest) = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Store.insert { insertStatement ->
             insertStatement.toStore(storeRequest)
         }
     }
 
-    suspend fun update(storeRequest: StoreRequest): Boolean = newSuspendedTransaction {
+    suspend fun update(storeRequest: StoreRequest): Boolean = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         val storeId = storeRequest.id ?: throw NullPointerException("Store id is null")
         Store.update({ Store.id eq storeId }) { updateStatement ->
             updateStatement.toStore(storeId, storeRequest)
         } > 0
     }
 
-    suspend fun delete(storeId: UUID): Boolean = newSuspendedTransaction {
+    suspend fun delete(storeId: UUID): Boolean = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Store.deleteWhere { Store.id eq storeId } > 0
     }
 }

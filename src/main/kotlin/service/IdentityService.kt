@@ -6,8 +6,8 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import io.ktor.util.AttributeKey
-import kotlinx.coroutines.currentCoroutineContext
+import io.ktor.util.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
 import org.burgas.Identity
 import org.burgas.UUIDSerializer
@@ -86,13 +86,13 @@ fun ResultRow.toIdentityResponse(): IdentityResponse {
 class IdentityService {
 
     suspend fun findAll(): List<IdentityResponse> = newSuspendedTransaction(
-        readOnly = true, transactionIsolation = 2, context = currentCoroutineContext()
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
     ) {
         Identity.selectAll().map { it.toIdentityResponse() }
     }
 
     suspend fun findById(identityId: UUID): IdentityResponse = newSuspendedTransaction(
-        readOnly = true, transactionIsolation = 2, context = currentCoroutineContext()
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
     ) {
         Identity.select(Identity.fields)
             .where { Identity.id eq identityId }
@@ -101,7 +101,7 @@ class IdentityService {
     }
 
     suspend fun create(identityRequest: IdentityRequest) = newSuspendedTransaction(
-        transactionIsolation = 2, context = currentCoroutineContext()
+        transactionIsolation = 2, context = Dispatchers.Default
     ) {
         Identity.insert { insertStatement ->
             insertStatement.toIdentity(identityRequest)
@@ -109,7 +109,7 @@ class IdentityService {
     }
 
     suspend fun update(identityRequest: IdentityRequest): Boolean = newSuspendedTransaction(
-        transactionIsolation = 2, context = currentCoroutineContext()
+        transactionIsolation = 2, context = Dispatchers.Default
     ) {
         val identityId = identityRequest.id ?: throw NullPointerException("Identity id is null")
         Identity.update({ Identity.id eq identityId }) { updateStatement ->
@@ -118,7 +118,7 @@ class IdentityService {
     }
 
     suspend fun delete(identityId: UUID): Boolean = newSuspendedTransaction(
-        transactionIsolation = 2, context = currentCoroutineContext()
+        transactionIsolation = 2, context = Dispatchers.Default
     ) {
         Identity.deleteWhere { Identity.id eq identityId } > 0
     }

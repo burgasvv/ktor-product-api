@@ -6,6 +6,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.serialization.Serializable
 import org.burgas.*
 import org.jetbrains.exposed.sql.*
@@ -118,7 +119,9 @@ fun UpdateStatement.toProduct(productId: UUID, productRequest: ProductRequest) {
 
 class ProductService {
 
-    suspend fun findAll(): List<ProductShortResponse> = newSuspendedTransaction {
+    suspend fun findAll(): List<ProductShortResponse> = newSuspendedTransaction(
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Product
             .leftJoin(Category)
             .selectAll()
@@ -129,7 +132,9 @@ class ProductService {
             .toList()
     }
 
-    suspend fun findById(productId: UUID): ProductFullResponse = newSuspendedTransaction {
+    suspend fun findById(productId: UUID): ProductFullResponse = newSuspendedTransaction(
+        readOnly = true, transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         val stores = Product.leftJoin(StoreProduct).leftJoin(Store)
             .select(Product.fields + Store.fields + StoreProduct.amount)
             .where { Product.id eq productId }
@@ -145,20 +150,26 @@ class ProductService {
             .single()
     }
 
-    suspend fun create(productRequest: ProductRequest) = newSuspendedTransaction {
+    suspend fun create(productRequest: ProductRequest) = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Product.insert { insertStatement ->
             insertStatement.toProduct(productRequest)
         }
     }
 
-    suspend fun update(productRequest: ProductRequest): Boolean = newSuspendedTransaction {
+    suspend fun update(productRequest: ProductRequest): Boolean = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         val productId = productRequest.id ?: throw NullPointerException("Product id is null")
         Product.update({ Product.id eq productId }) { updateStatement ->
             updateStatement.toProduct(productId, productRequest)
         } > 0
     }
 
-    suspend fun delete(productId: UUID): Boolean = newSuspendedTransaction {
+    suspend fun delete(productId: UUID): Boolean = newSuspendedTransaction(
+        transactionIsolation = 2, context = Dispatchers.Default
+    ) {
         Product.deleteWhere { Product.id eq productId } > 0
     }
 }
