@@ -184,3 +184,26 @@ Content-Type: application/json
 DELETE /api/v1/stores/delete?storeId=31a9688a-7bc8-4922-bf93-e05488b5c196
 Host: localhost:9000
 Accept: application/json
+
+
+
+### StoreProduct Requests
+
+
+
+###
+POST /api/v1/store-products/add-products?storeId=958a0897-2a11-4923-9f35-33b7f2a0f54d&productId=46786581-a056-4873-9a77-09242a1c0590&amount=69
+Host: localhost:9000
+Accept: application/json
+Origin: http://localhost:9000
+X-Csrf-Token: 72b97764-e685-41c8-8ba3-dbc2cef4a484
+Authorization: Basic burgasvv@gmail.com burgasvv
+
+###
+DELETE /api/v1/store-products/remove-products?
+    storeId=958a0897-2a11-4923-9f35-33b7f2a0f54d&productId=568c59a9-469a-4d2d-8832-01d3461b5579&productId=46786581-a056-4873-9a77-09242a1c0590
+Host: localhost:9000
+Accept: application/json
+Origin: http://localhost:9000
+X-Csrf-Token: 32a1144d-42ab-494e-bf2d-3317c6960f69
+Authorization: Basic burgasvv@gmail.com burgasvv
