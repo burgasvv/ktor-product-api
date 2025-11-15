@@ -192,18 +192,58 @@ Accept: application/json
 
 
 ###
-POST /api/v1/store-products/add-products?storeId=958a0897-2a11-4923-9f35-33b7f2a0f54d&productId=46786581-a056-4873-9a77-09242a1c0590&amount=69
+POST /api/v1/store-products/add-products
 Host: localhost:9000
 Accept: application/json
+Content-Type: application/json
 Origin: http://localhost:9000
-X-Csrf-Token: 72b97764-e685-41c8-8ba3-dbc2cef4a484
+X-Csrf-Token: cd30bc4c-09b1-485b-9f46-c34e4c302c38
 Authorization: Basic burgasvv@gmail.com burgasvv
 
+[
+    {
+        "storeId": "958a0897-2a11-4923-9f35-33b7f2a0f54d",
+        "productId": "46786581-a056-4873-9a77-09242a1c0590",
+        "amount": 54
+    },
+    {
+        "storeId": "958a0897-2a11-4923-9f35-33b7f2a0f54d",
+        "productId": "568c59a9-469a-4d2d-8832-01d3461b5579",
+        "amount": 87
+    }
+]
+
 ###
-DELETE /api/v1/store-products/remove-products?
-    storeId=958a0897-2a11-4923-9f35-33b7f2a0f54d&productId=568c59a9-469a-4d2d-8832-01d3461b5579&productId=46786581-a056-4873-9a77-09242a1c0590
+PUT /api/v1/store-products/change-amount
 Host: localhost:9000
 Accept: application/json
-Origin: http://localhost:9000
-X-Csrf-Token: 32a1144d-42ab-494e-bf2d-3317c6960f69
+Content-Type: application/json
 Authorization: Basic burgasvv@gmail.com burgasvv
+Origin: http://localhost:9000
+X-Csrf-Token: 148b1e3b-f4bf-4553-af66-e7b76b99c1a0
+
+{
+    "storeId": "958a0897-2a11-4923-9f35-33b7f2a0f54d",
+    "productId": "efd58b83-646a-47fa-9ef9-bd12a4a6b17b",
+    "amount": 100
+}
+
+###
+DELETE /api/v1/store-products/remove-products
+Host: localhost:9000
+Accept: application/json
+Content-Type: application/json
+Origin: http://localhost:9000
+X-Csrf-Token: c922497b-eaa7-461c-9643-ab02f0ba50f0
+Authorization: Basic burgasvv@gmail.com burgasvv
+
+[
+    {
+        "storeId": "958a0897-2a11-4923-9f35-33b7f2a0f54d",
+        "productId": "46786581-a056-4873-9a77-09242a1c0590"
+    },
+    {
+        "storeId": "958a0897-2a11-4923-9f35-33b7f2a0f54d",
+        "productId": "568c59a9-469a-4d2d-8832-01d3461b5579"
+    }
+]

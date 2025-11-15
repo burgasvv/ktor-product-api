@@ -14,7 +14,7 @@ import java.util.*
 fun Application.configureRouting() {
     install(StatusPages) {
 
-        exception<RuntimeException> { call, cause ->
+        exception<Throwable> { call, cause ->
             call.respondText(cause.localizedMessage, ContentType.Text.Plain, HttpStatusCode.BadRequest)
         }
     }
@@ -31,7 +31,6 @@ fun Application.configureRouting() {
         allowMethod(HttpMethod.Delete)
         allowMethod(HttpMethod.Patch)
         allowHeader(HttpHeaders.Authorization)
-        allowHeader("MyCustomHeader")
         anyHost()
     }
 

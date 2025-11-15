@@ -10,8 +10,8 @@ fun Application.configureAuthentication() {
     authentication {
 
         basic("basic-auth-all") {
-            validate { credentials ->
-                transaction(readOnly = true, transactionIsolation = 2) {
+            validate { credentials -> transaction(readOnly = true, transactionIsolation = 2) {
+
                     val identity = Identity.select(Identity.fields)
                         .where { (Identity.email eq credentials.name) }
                         .singleOrNull()
@@ -33,8 +33,8 @@ fun Application.configureAuthentication() {
         }
 
         basic("basic-auth-admin") {
-            validate { credentials ->
-                transaction(readOnly = true, transactionIsolation = 2) {
+            validate { credentials -> transaction(readOnly = true, transactionIsolation = 2) {
+
                     val identity = Identity.select(Identity.fields)
                         .where { (Identity.email eq credentials.name) }
                         .singleOrNull()
