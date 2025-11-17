@@ -5,7 +5,7 @@ services:
     image: postgres:latest
     container_name: ktor_product_api_postgres
     ports:
-      - "6000:5432"
+      - "5432:5432"
     restart: unless-stopped
     environment:
       POSTGRES_USERNAME: postgres
@@ -24,7 +24,12 @@ services:
     ports:
       - "9000:9000"
     environment:
-      POSTGRES_URL: jdbc:postgresql://postgres:5432/ktor_product_api_db
+      POSTGRES_DB: ktor_product_api_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ktor_product_api_data:/var/lib/ktor_product_api/data
 
 volumes:
   postgres_data:
+  ktor_product_api_data:

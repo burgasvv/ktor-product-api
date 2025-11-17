@@ -6,7 +6,7 @@ ktor:
   deployment:
     port: 9000
 postgres:
-  url: jdbc:postgresql://localhost:6000/ktor_product_api_db
+  url: jdbc:postgresql://localhost:5432/ktor_product_api_db
   user: postgres
   password: postgres
   driver: org.postgresql.Driver

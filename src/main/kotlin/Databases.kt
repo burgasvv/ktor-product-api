@@ -60,13 +60,12 @@ object StoreProduct : Table("store_product") {
         get() = PrimaryKey(arrayOf(storeId, productId))
 }
 
-@Suppress("UnusedReceiverParameter")
 fun Application.configureDatabases() {
     val database = Database.connect(
-        url = "jdbc:postgresql://localhost:6000/ktor_product_api_db",
-        user = "postgres",
-        driver = "org.postgresql.Driver",
-        password = "postgres"
+        url = environment.config.property("postgres.url").getString(),
+        user = environment.config.property("postgres.user").getString(),
+        driver = environment.config.property("postgres.driver").getString(),
+        password = environment.config.property("postgres.password").getString()
     )
 
     transaction(database) {

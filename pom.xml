@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--suppress VulnerableLibrariesLocal, MavenDuplicatePluginInspection, MavenDuplicateDependenciesInspection -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -14,7 +13,7 @@
         <h2_version>2.3.232</h2_version>
         <kotlin_version>2.2.20</kotlin_version>
         <ktor_version>3.3.1</ktor_version>
-        <logback_version>1.4.14</logback_version>
+        <logback_version>1.5.13</logback_version>
         <postgres_version>42.7.8</postgres_version>
         <slf4j_version>2.0.9</slf4j_version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -100,51 +99,13 @@
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-content-negotiation</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
             <artifactId>ktor-server-core</artifactId>
             <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-serialization-gson</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-content-negotiation</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
             <artifactId>ktor-serialization-kotlinx-json</artifactId>
             <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-serialization-jackson</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-client-content-negotiation</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-serialization-jackson</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
@@ -158,15 +119,8 @@
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-auth</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
             <artifactId>ktor-server-csrf-jvm</artifactId>
             <version>3.3.1</version>
-            <scope>implementation</scope>
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
@@ -183,7 +137,6 @@
             <groupId>io.ktor</groupId>
             <artifactId>ktor-server-host-common</artifactId>
             <version>3.3.1</version>
-            <scope>implementation</scope>
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
@@ -192,33 +145,13 @@
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-status-pages</artifactId>
+            <artifactId>ktor-server-sessions-jvm</artifactId>
             <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-csrf</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-sessions</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
             <artifactId>ktor-server-cors-jvm</artifactId>
             <version>3.3.1</version>
-            <scope>implementation</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.ktor</groupId>
-            <artifactId>ktor-server-cors</artifactId>
-            <version>3.3.1</version>
-            <scope>implementation</scope>
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
@@ -227,7 +160,7 @@
         </dependency>
         <dependency>
             <groupId>io.ktor</groupId>
-            <artifactId>ktor-client-cio</artifactId>
+            <artifactId>ktor-client-cio-jvm</artifactId>
             <version>3.3.2</version>
         </dependency>
     </dependencies>
@@ -242,12 +175,9 @@
 
         <plugins>
             <plugin>
-                <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
                 <version>${kotlin_version}</version>
-                <configuration>
-                    <jvmTarget>1.8</jvmTarget>
-                </configuration>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -264,6 +194,19 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <jvmTarget>1.8</jvmTarget>
+                    <compilerPlugins>
+                        <plugin>kotlinx-serialization</plugin>
+                    </compilerPlugins>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-serialization</artifactId>
+                        <version>2.1.21</version>
+                    </dependency>
+                </dependencies>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -304,31 +247,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.jetbrains.kotlin</groupId>
-                <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin_version}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <compilerPlugins>
-                        <plugin>kotlinx-serialization</plugin>
-                    </compilerPlugins>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jetbrains.kotlin</groupId>
-                        <artifactId>kotlin-maven-serialization</artifactId>
-                    </dependency>
-                </dependencies>
             </plugin>
         </plugins>
     </build>
